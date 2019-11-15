@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -18,9 +19,16 @@ namespace DbBackupAndRestorer.library
             _server = new Server(serverConnection);
         }
 
-        public DatabaseCollection DatabaseList()
+        public List<DatabaseProperty> DatabaseList()
         {
-            return _server.Databases;
+            var databaseList = new List<DatabaseProperty>();
+            var databases = _server.Databases;
+            foreach (Database database in databases)
+            {
+                databaseList.Add(new DatabaseProperty{Name = database.Name});
+            }
+
+            return databaseList;
         }
 
         
