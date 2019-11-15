@@ -18,7 +18,7 @@ namespace DbBackupAndRestorer.Console
 
             start:
             int menu = int.Parse(System.Console.ReadLine() ?? throw new InvalidOperationException());
-            var sqlConnector = new SqlConnector(".", "sa", "password1");
+            var sqlConnector = new DbBackUpAndRestorer(".", "sa", "password1");
             switch (menu)
             {
 
@@ -34,7 +34,7 @@ namespace DbBackupAndRestorer.Console
                 case 2:
                     System.Console.WriteLine($"Enter  the database you want to backup from the list above");
                     var databaseToBackUp = System.Console.ReadLine();
-                    sqlConnector.DbBackup(databaseToBackUp, @"C:\\BackUp");
+                    sqlConnector.BackupDatabase(databaseToBackUp, @"C:\\BackUp");
                     goto start;
                     break;
                 case 3:

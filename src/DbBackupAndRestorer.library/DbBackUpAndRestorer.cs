@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace DbBackupAndRestorer.library
 {
-    public class SqlConnector
+    public class DbBackUpAndRestorer
     {
         private readonly Server _server;
 
-        public SqlConnector(string host, string user, string password )
+        public DbBackUpAndRestorer(string host, string user, string password )
         {
             var serverConnection = new ServerConnection(host, user, password);
             _server = new Server(serverConnection);
@@ -32,7 +29,7 @@ namespace DbBackupAndRestorer.library
         }
 
         
-        public void DbBackup(string databaseName, string destinationPath)
+        public void BackupDatabase(string databaseName, string destinationPath)
         {
             try
             {
@@ -48,7 +45,7 @@ namespace DbBackupAndRestorer.library
                     BackupSetName = databaseName + "backup",
                     Database = databaseName
                 }; 
-                var dbname = $"{backupFileFormat}_{databaseName}"+".bak"; 
+                var dbname = $"{backupFileFormat}_{databaseName}"; 
                     if (!Directory.Exists(destinationPath)) Directory.CreateDirectory(destinationPath);
                     _server.BackupDirectory = destinationPath;
                     var backupFileName = Path.Combine(destinationPath, dbname);
@@ -97,7 +94,7 @@ namespace DbBackupAndRestorer.library
            
         }
 
-        public void ValidateParams(string databaseName)
+        private void ValidateParams(string databaseName)
         {
             if (string.IsNullOrEmpty(databaseName)) throw new Exception("Database name is required");
         }
